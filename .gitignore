@@ -1,3 +1,6 @@
+# ignore the following folder
+test_tex_files
+
 *.py[cod]
 
 # C extensions
