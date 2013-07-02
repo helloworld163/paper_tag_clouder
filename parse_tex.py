@@ -2,22 +2,28 @@
 
 # Hung-Hsuan Chen <hhchen@psu.edu>
 # Creation Date : 06-30-2013
-# Last Modified: Sun 30 Jun 2013 11:08:06 PM EDT
+# Last Modified: Mon 01 Jul 2013 09:32:35 PM EDT
 
 import os
 import sys
 
-def get_tex_files(folder_name):
-  if not os.path.isdir(folder_name):
-    raise Exception("Invalid folder name %s" % (folder_name))
+def parse_tex_abstract(filename):
+  if not os.path.isfile(filename):
+    raise Exception("Invalid file name %s" % (filename))
 
-  tex_files = [ ]
-  file_names = [f for f in os.listdir(folder_name) if os.path.isfile(os.path.join(folder_name, f))]
-  for filename in file_names:
-    if os.path.splitext(filename)[1] == '.tex':
-      tex_files.append(os.path.join(folder_name, filename))
-  return tex_files
-
+  is_in_abstract = False
+  abs_contents = ''
+  with open(filename) as f:
+    for line in f:
+      line = line.strip()
+      if line[:6] == '\\begin' and line[line.find('{')+1:line.rfind('}')].strip() == 'abstract':
+        is_in_abstract = True
+      if is_in_abstract:
+        abs_contents += ' '
+        abs_contents += line
+      if line[:4] == '\\end' and line[line.find('{')+1:line.rfind('}')].strip() == 'abstract':
+        break
+  return abs_contents[abs_contents.find('}') + 1 : abs_contents.find('\\end')].strip()
 
 def main(argv):
   pass
@@ -25,13 +31,10 @@ def main(argv):
 if __name__ == "__main__":
   main(sys.argv)
 
-from nose.tools import assert_equal, assert_true
+from nose.tools import assert_equal
 
 class TestAll():
-  def test_get_tex_files(self):
-    tex_files = get_tex_files('./test_tex_files')
-    assert_true(len(tex_files) > 0)
-    for filename in tex_files:
-      assert_equal(os.path.splitext(filename)[1], '.tex')
-
-
+  def test_parse_tex_abstract(self):
+    tex_file = './test_tex_files/collabseer.tex'
+    real_abs = '''Collaborative research has been increasingly popular and important in academic circles. However, there is no open platform available for scholars or scientists to effectively discover potential collaborators. This paper discusses CollabSeer, an open system to recommend potential research collaborators for scholars and scientists. CollabSeer discovers collaborators based on the structure of the coauthor network and a user's research interests. Currently, three different network structure analysis methods that use vertex similarity are supported in CollabSeer: Jaccard similarity, cosine similarity, and our relation strength similarity measure. Users can also request a recommendation by selecting a topic of interest. The topic of interest list is determined by CollabSeer's lexical analysis module, which analyzes the key phrases of previous publications. The CollabSeer system is highly modularized making it easy to add or replace the network analysis module or users' topic of interest analysis module. CollabSeer integrates the results of the two modules to recommend collaborators to users. Initial experimental results over the a subset of the CiteSeerX database shows that CollabSeer can efficiently  discover prospective collaborators.'''
+    assert_equal(parse_tex_abstract(tex_file), real_abs)
