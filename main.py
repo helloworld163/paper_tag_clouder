@@ -2,11 +2,15 @@
 
 # Hung-Hsuan Chen <hhchen@psu.edu>
 # Creation Date : 07-01-2013
-# Last Modified: Mon 01 Jul 2013 10:41:23 PM EDT
+# Last Modified: Tue 02 Jul 2013 11:12:55 PM EDT
 
-import gflags
+import collections
 import os
 import sys
+
+import gflags
+import pytagcloud
+import pytagcloud.lang.counter
 
 import parse_tex
 import get_nouns
@@ -40,21 +44,33 @@ def get_tex_files(folder_name):
       tex_files.append(os.path.join(folder_name, filename))
   return tex_files
 
+def gen_tag_cloud(all_terms):
+  # TODO: although pygame library looks like that it has beein successfully installed,
+  #       import pygame.font raises exception...
+  #       how to install pygame correctly?
+  pytagcloud.create_tag_image(pytagcloud.lang.counter.get_tag_counts(all_terms),
+      'cloud_large.png', size=(900, 600))
+
+def dict_to_list_of_tuples(term_ctr):
+  li_of_tup = [ ]
+  for term in term_ctr:
+    li_of_tup.append((term, term_ctr[term]))
+  return li_of_tup
+
 def main(argv):
   check_args(argv)
 
-  all_terms = [ ]
+  all_terms = collections.defaultdict(int)
   tex_files = get_tex_files(FLAGS.tex_folder)
   for f in tex_files:
     abs = parse_tex.parse_tex_abstract(f)
     terms = get_nouns.get_nouns_and_noun_phrases(abs)
     for t in terms:
       term = ' '.join(t)
-      for i in range(2 * len(term.split())):  # repeat 2*n times for a n-gram
-        all_terms.append(term)
+      #for i in range(2 * len(term.split())):  # repeat 2*n times for a n-gram
+      all_terms[term] += 2 * len(term.split())  # the weight of an n-gram is set to 2 * n
 
-  print all_terms
-  # TODO: generate tag-cloud
+  gen_tag_cloud(dict_to_list_of_tuples(all_terms))
 
 if __name__ == "__main__":
   main(sys.argv)
