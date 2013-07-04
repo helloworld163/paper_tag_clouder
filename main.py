@@ -2,7 +2,7 @@
 
 # Hung-Hsuan Chen <hhchen@psu.edu>
 # Creation Date : 07-01-2013
-# Last Modified: Wed 03 Jul 2013 09:53:42 PM EDT
+# Last Modified: Thu 04 Jul 2013 04:41:31 PM EDT
 
 import collections
 import operator
@@ -44,24 +44,12 @@ def get_tex_files(folder_name):
   return tex_files
 
 def gen_tag_cloud(term_ctr):
-  # TODO: maybe use one of the following options instead?
-  #       1. http://peekaboo-vision.blogspot.com/2012/11/a-wordcloud-in-python.html and 
-  #          https://github.com/amueller/word_cloud
-  #       2. https://github.com/jasondavies/d3-cloud
-  #       3. https://github.com/indyarmy/jQuery.awesomeCloud.plugin
   with open('./d3-cloud/examples/word_ctr.txt', 'w') as f:
     for (term, freq) in term_ctr:
       f.write("%s:%d\n" % (term, int(round(freq))))
 
 def sort_dict_by_value(x):
   return sorted(x.iteritems(), key=operator.itemgetter(1), reverse = True)
-
-def normalize_ctr_values(all_terms, new_min, new_max):
-  orig_max = max(all_terms.values())
-  orig_min = min(all_terms.values())
-  for term in all_terms:
-    all_terms[term] = new_min + \
-        float(new_max - new_min) * (all_terms[term] - orig_min) / (orig_max - orig_min)
 
 def main(argv):
   check_args(argv)
@@ -76,7 +64,6 @@ def main(argv):
       if term != '':
         all_terms[term] += 2 * len(term.split())  # the weight of an n-gram is set to 2 * n
 
-  normalize_ctr_values(all_terms, 10, 100)
   gen_tag_cloud(sort_dict_by_value(all_terms))
 
 if __name__ == "__main__":

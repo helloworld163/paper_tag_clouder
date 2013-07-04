@@ -5,6 +5,16 @@
   <script>
     var terms = new Array();
     var freq = new Array();
+
+    function normalize_arr(arr, new_min, new_max) {
+      var orig_max = Math.max.apply(Math, arr);
+      var orig_min = Math.min.apply(Math, arr);
+      for (var i=0; i<arr.length; i++) {
+        arr[i] = new_min + (new_max - new_min) * (arr[i]-orig_min) / (orig_max - orig_min);
+      }
+      return (arr)
+    }
+
     function loadXMLDoc() {
       var xmlhttp;
       if (window.XMLHttpRequest) {
@@ -22,7 +32,7 @@
             terms.push(word_freq[0]);
             freq.push(word_freq[1]);
           }
-
+          freq = normalize_arr(freq, 10, 100);
           // start to generate tag cloud
           var width = 500;
           var height = 250;
