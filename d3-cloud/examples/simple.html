@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<head>
+  <script src="../lib/d3/d3.js"></script>
+  <script src="../d3.layout.cloud.js"></script>
+  <script>
+    var terms = new Array();
+    var freq = new Array();
+    function loadXMLDoc() {
+      var xmlhttp;
+      if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+      } else {// code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+          var text = xmlhttp.responseText;
+          var lines = text.split("\n");
+          for (var i=0; i < lines.length; i++) {
+            var word_freq = lines[i].split(":");
+            terms.push(word_freq[0]);
+            freq.push(word_freq[1]);
+          }
+
+          var fill = d3.scale.category20();
+          var word_ctr = new Array();
+          for (var i=0; i < terms.length; i++) {
+            word_ctr[i] = {text:terms[i], size:freq[i]};
+          }
+
+          d3.layout.cloud().size([800, 300])
+              .words(word_ctr)
+              .padding(5)
+              .rotate(function() { return ~~(Math.random() * 2) * 90; })
+              .font("Impact")
+              .fontSize(function(d) { return d.size; })
+              .on("end", draw)
+              .start();
+
+          function draw(words) {
+            d3.select("body").append("svg")
+                .attr("width", 800)
+                .attr("height", 300)
+              .append("g")
+                .attr("transform", "translate(150,150)")
+              .selectAll("text")
+                .data(words)
+              .enter().append("text")
+                .style("font-size", function(d) { return d.size + "px"; })
+                .style("font-family", "Impact")
+                .style("fill", function(d, i) { return fill(i); })
+                .attr("text-anchor", "middle")
+                .attr("transform", function(d) {
+                  return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                })
+                .text(function(d) { return d.text; });
+          }
+        }
+      }
+
+      xmlhttp.open("GET", "word_ctr.txt", true);
+      xmlhttp.send();
+    }
+  </script>
+</head>
+<body onload="loadXMLDoc()">
+</body>

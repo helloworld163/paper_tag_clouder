@@ -1,0 +1,180 @@
+% THIS IS SIGPROC-SP.TEX - VERSION 3.1
+% WORKS WITH V3.2SP OF ACM_PROC_ARTICLE-SP.CLS
+% APRIL 2009
+%
+% It is an example file showing how to use the 'acm_proc_article-sp.cls' V3.2SP
+% LaTeX2e document class file for Conference Proceedings submissions.
+% ----------------------------------------------------------------------------------------------------------------
+% This .tex file (and associated .cls V3.2SP) *DOES NOT* produce:
+%       1) The Permission Statement
+%       2) The Conference (location) Info information
+%       3) The Copyright Line with ACM data
+%       4) Page numbering
+% ---------------------------------------------------------------------------------------------------------------
+% It is an example which *does* use the .bib file (from which the .bbl file
+% is produced).
+% REMEMBER HOWEVER: After having produced the .bbl file,
+% and prior to final submission,
+% you need to 'insert'  your .bbl file into your source .tex file so as to provide
+% ONE 'self-contained' source file.
+%
+% Questions regarding SIGS should be sent to
+% Adrienne Griscti ---> griscti@acm.org
+%
+% Questions/suggestions regarding the guidelines, .tex and .cls files, etc. to
+% Gerald Murray ---> murray@hq.acm.org
+%
+% For tracking purposes - this is V3.1SP - APRIL 2009
+
+%\documentclass{acm_proc_article-sp}
+\documentclass{sig-alternate}
+\usepackage{subfigure}
+\usepackage{url}
+
+\newcommand{\fig}[4]{
+    \begin{figure}[tb]\centering
+    \includegraphics[width=#4in]{fig/#1}
+    %\vspace{-3ex}
+    \caption{#2}
+    \label{#3}\end{figure}
+    {}}
+
+\newcommand{\figtwo}[8]{
+    \begin{figure}[tb]\centering
+    \subfigure[#2] {
+    \label{#3}
+    \includegraphics[width=1.55in]{fig/#1}
+    }
+    \subfigure[#5] {
+    \label{#6}
+    \includegraphics[width=1.55in]{fig/#4}
+    }
+    %\vspace{-3ex}
+    \caption{#7}
+    \label{#8}
+    \end{figure}
+    {}}
+
+\newcommand{\todo}[1]{
+    \textbf{// #1}
+    {}}
+
+\begin{document}
+\conferenceinfo{JCDL'11,} {June 13--17, 2011, Ottawa, Ontario, Canada.}
+\CopyrightYear{2011}
+\crdata{978-1-4503-0744-4/11/06}
+\clubpenalty=10000
+\widowpenalty = 10000
+
+\title{CollabSeer: A Search Engine for Collaboration Discovery}
+%\subtitle{[Extended Abstract]
+%\titlenote{A full version of this paper is available as
+%\textit{Author's Guide to Preparing ACM SIG Proceedings Using
+%\LaTeX$2_\epsilon$\ and BibTeX} at
+%\texttt{www.acm.org/eaddress.htm}}}
+%
+% You need the command \numberofauthors to handle the 'placement
+% and alignment' of the authors beneath the title.
+%
+% For aesthetic reasons, we recommend 'three authors at a time'
+% i.e. three 'name/affiliation blocks' be placed beneath the title.
+%
+% NOTE: You are NOT restricted in how many 'rows' of
+% "name/affiliations" may appear. We just ask that you restrict
+% the number of 'columns' to three.
+%
+% Because of the available 'opening page real-estate'
+% we ask you to refrain from putting more than six authors
+% (two rows with three columns) beneath the article title.
+% More than six makes the first-page appear very cluttered indeed.
+%
+% Use the \alignauthor commands to handle the names
+% and affiliations for an 'aesthetic maximum' of six authors.
+% Add names, affiliations, addresses for
+% the seventh etc. author(s) as the argument for the
+% \additionalauthors command.
+% These 'additional authors' will be output/set for you
+% without further effort on your part as the last section in
+% the body of your article BEFORE References or any Appendices.
+
+\numberofauthors{1} %  in this sample file, there are a *total*
+% of EIGHT authors. SIX appear on the 'first-page' (for formatting
+% reasons) and the remaining two appear in the \additionalauthors section.
+%
+\author{
+\alignauthor Hung-Hsuan Chen$^\dag$, Liang Gou$^\ddag$, Xiaolong (Luke) Zhang$^\ddag$, C. Lee Giles$^\dag$$^\ddag$ \\
+\affaddr{$^\dag$Computer Science and Engineering} \\
+\affaddr{$^\ddag$Information Sciences and Technology} \\
+\affaddr{The Pennsylvania State University} \\
+\email{hhchen@psu.edu, \{lug129, lzhang, giles\}@ist.psu.edu}
+}
+% There's nothing stopping you putting the seventh, eighth, etc.
+% author on the opening page (as the 'third row') but we ask,
+% for aesthetic reasons that you place these 'additional authors'
+% in the \additional authors block, viz.
+
+% Just remember to make sure that the TOTAL number of authors
+% is the number that will appear on the first page PLUS the
+% number that will appear in the \additionalauthors section.
+
+\maketitle
+\begin{abstract}
+Collaborative research has been increasingly popular and important in academic circles. However, there is no open platform available for scholars or scientists to effectively discover potential collaborators. This paper discusses CollabSeer, an open system to recommend potential research collaborators for scholars and scientists. CollabSeer discovers collaborators based on the structure of the coauthor network and a user's research interests. Currently, three different network structure analysis methods that use vertex similarity are supported in CollabSeer: Jaccard similarity, cosine similarity, and our relation strength similarity measure. Users can also request a recommendation by selecting a topic of interest. The topic of interest list is determined by CollabSeer's lexical analysis module, which analyzes the key phrases of previous publications. The CollabSeer system is highly modularized making it easy to add or replace the network analysis module or users' topic of interest analysis module. CollabSeer integrates the results of the two modules to recommend collaborators to users. Initial experimental results over the a subset of the CiteSeerX database shows that CollabSeer can efficiently  discover prospective collaborators.
+
+\end{abstract}
+
+\category{H.3.3}{Information Storage and Retrieval}{Information Search and Retrieval}[relevance feedbacks, retrieval models, selection process]
+\category{H.3.7}{Information Storage and Retrieval}{Digital Library}[Collections, Dissemination]
+\category{J.4}{Social and Behavior Sciences}{Sociology}
+
+\terms{Design, Algorithms, Experimentation}
+
+\keywords{Social Network, Coauthor Network, Graph Theory, Link Analysis, Digital Library, Information Retrieval} % NOT required for Proceedings
+
+\section{Introduction}
+
+intro
+
+\section{Related Work}
+
+foo
+
+\section{System Overview}
+
+bar
+
+\section{Similarity Algorithms}
+
+baz
+
+\section{Experiments}
+
+qux
+
+\section{Conclusion and Discussion}
+
+quux
+
+\section{Acknowledgements}
+
+We gratefully acknowledge partial support from Alcatel-Lucent and NSF.
+
+%
+% The following two commands are all you need in the
+% initial runs of your .tex file to
+% produce the bibliography for the citations in your paper.
+\bibliographystyle{abbrv}
+\bibliography{sigproc}  % sigproc.bib is the name of the Bibliography in this case
+% You must have a proper ".bib" file
+%  and remember to run:
+% latex bibtex latex latex
+% to resolve all references
+%
+% ACM needs 'a single self-contained file'!
+%
+%APPENDICES are optional
+%\balancecolumns
+
+\balancecolumns
+% That's all folks!
+\end{document}

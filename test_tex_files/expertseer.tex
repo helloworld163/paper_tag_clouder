@@ -1,0 +1,162 @@
+%\documentclass{acm_proc_article-sp}
+\documentclass{sig-alternate}
+%\documentclass[onecolumn]{IEEEtran}
+
+\usepackage{subfigure}
+\usepackage{url}
+
+\usepackage{ifthen}
+\newboolean{acmproc}
+\setboolean{acmproc}{true}
+
+\ifthenelse{\boolean{acmproc}}{
+    \usepackage{graphicx} % use this when importing ps- and eps-files
+    \usepackage{cite} % make the reference number sorted
+}{
+    \usepackage[dvips]{graphicx} % use this when importing ps- and eps-files
+    \usepackage{amssymb}
+    \usepackage[numbers,sort&compress]{natbib}
+}
+
+\newcommand{\fig}[4]{
+    \begin{figure}[tb]\centering
+    \includegraphics[width=#4in]{fig/#1}
+    \vspace{-3ex}
+    \caption{#2}
+    \label{#3}\end{figure}
+    {}}
+
+\newcommand{\figtwo}[8]{
+    \begin{figure}[tb]\centering
+    \subfigure[#2] {
+    \label{#3}
+    \includegraphics[width=1.55in]{fig/#1}
+%    \includegraphics[width=2in]{fig/#1}
+    }
+    \subfigure[#5] {
+    \label{#6}
+    \includegraphics[width=1.55in]{fig/#4}
+%    \includegraphics[width=2in]{fig/#4}
+    }
+    \vspace{-3ex}
+    \caption{#7}
+    \label{#8}
+    \end{figure}
+    {}}
+
+\newcommand{\todo}[1]{
+    \textbf{// #1}
+    {}}
+
+\begin{document}
+
+\title{ExpertSeer: a Keyphrase Based Expert Recommender for Digital Libraries}
+
+\ifthenelse{\boolean{acmproc}}{
+  \numberofauthors{1}
+  \author{
+    \alignauthor Hung-Hsuan Chen$^\dag$, C. Lee Giles$^\dag$$^\ddag$ \\
+    \affaddr{$^\dag$Computer Science and Engineering, $^\ddag$Information Sciences and Technology} \\
+    \affaddr{The Pennsylvania State University, University Park, PA 16802, USA} \\
+    \email{hhchen@psu.edu, giles@ist.psu.edu}
+  }
+}{
+  \author{
+    Hung-Hsuan Chen$^\dag$, C. Lee Giles$^\dag$$^\ddag$\\
+    $^\dag$Computer Science and Engineering, $^\ddag$Information Sciences and Technology \\
+    The Pennsylvania State University, University Park, PA 16802, USA \\
+    hhchen@psu.edu, giles@ist.psu.edu
+  }
+}
+
+\date{30 July 1999}
+
+\maketitle
+\begin{abstract}
+
+We propose ExpertSeer, a generic framework for expert
+recommendation based on a digital library.  Given a query term $q$, ExpertSeer
+recommends experts of $q$ by retrieving authors who published relevant papers determined by keyphrases and citations.
+%%% what quality?
+ExpertSeer is domain independent.  It can be applied to different disciplines and
+applications because it is automated and not tailored to a specific
+discipline.  For example, digital library providers can employ the
+system to enrich their service offerings.  Organizations can discover experts of interest within the organization.  To demonstrate
+the power of ExpertSeer, we apply the framework to build two expert recommender
+systems.  The first, CSSeer, is based on the CiteSeerX digital library and recommends
+experts primarily in computer science.  The second, ChemSeer, uses publicly
+available documents from Royal Society of Chemistry (RSC) to recommend experts
+in chemistry.
+In addition ExpertSeer is designed so that different keyphrase extractors can be used.
+Experiments show that our automatically generated keyphrase candidate list has a reasonable coverage of terms
+in the computer science discipline.  Second, the recommended authors are usually
+prestigious researchers who have published several papers related to the query term.
+Third, using 1,000 computer science terms as benchmark queries, we compared the
+top $n$ experts ($n=3,5,10,20$) returned by CSSeer to two other expert
+recommenders (Microsoft Academic Search, and ArnetMiner).  The result suggests
+that different expert recommender systems have moderately different recommendations.
+Since our system is the only one of the three that provides experts of related
+topics, users are more likely to obtain a comprehensive list of experts by
+browsing though the experts of related topics provided by ExpertSeer.
+
+\end{abstract}
+
+\ifthenelse{\boolean{acmproc}}{
+  % A category with the (minimum) three required fields
+  \category{H.4}{Information Systems Applications}{Miscellaneous}
+  %A category including the fourth, optional field follows...
+  \category{H.3.7}{Information Storage and Retrieval}{Digital Library}[Collections, Dissemination]
+  \category{H.3.3}{Information Storage and Retrieval}{Information Search and Retrieval}[relevance feedbacks, retrieval models, selection process]
+
+  \terms{Design, Algorithm, Experimentation}
+
+  \keywords{Expert Recommendation, Related Term Recommendation, Digital Library, Text Mining, Language Model, Keyphrase Candidate Discovery} % NOT required for Proceedings
+}
+
+\section{Introduction}
+
+intro
+
+\section{Related Work}
+
+foo
+
+\section{System Overview}
+
+bar
+
+\section{Similarity Algorithms}
+
+baz
+
+\section{Experiments}
+
+qux
+
+\section{Conclusion and Discussion}
+
+quux
+
+\section{Acknowledgements}
+
+We gratefully acknowledge partial support from Alcatel-Lucent and NSF.
+
+%
+% The following two commands are all you need in the
+% initial runs of your .tex file to
+% produce the bibliography for the citations in your paper.
+\bibliographystyle{abbrv}
+\bibliography{sigproc}  % sigproc.bib is the name of the Bibliography in this case
+% You must have a proper ".bib" file
+%  and remember to run:
+% latex bibtex latex latex
+% to resolve all references
+%
+% ACM needs 'a single self-contained file'!
+%
+%APPENDICES are optional
+%\balancecolumns
+
+\balancecolumns
+% That's all folks!
+\end{document}
