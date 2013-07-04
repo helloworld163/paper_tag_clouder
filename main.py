@@ -2,15 +2,14 @@
 
 # Hung-Hsuan Chen <hhchen@psu.edu>
 # Creation Date : 07-01-2013
-# Last Modified: Tue 02 Jul 2013 11:12:55 PM EDT
+# Last Modified: Wed 03 Jul 2013 09:53:42 PM EDT
 
 import collections
+import operator
 import os
 import sys
 
 import gflags
-import pytagcloud
-import pytagcloud.lang.counter
 
 import parse_tex
 import get_nouns
@@ -44,18 +43,25 @@ def get_tex_files(folder_name):
       tex_files.append(os.path.join(folder_name, filename))
   return tex_files
 
-def gen_tag_cloud(all_terms):
-  # TODO: although pygame library looks like that it has beein successfully installed,
-  #       import pygame.font raises exception...
-  #       how to install pygame correctly?
-  pytagcloud.create_tag_image(pytagcloud.lang.counter.get_tag_counts(all_terms),
-      'cloud_large.png', size=(900, 600))
+def gen_tag_cloud(term_ctr):
+  # TODO: maybe use one of the following options instead?
+  #       1. http://peekaboo-vision.blogspot.com/2012/11/a-wordcloud-in-python.html and 
+  #          https://github.com/amueller/word_cloud
+  #       2. https://github.com/jasondavies/d3-cloud
+  #       3. https://github.com/indyarmy/jQuery.awesomeCloud.plugin
+  with open('./d3-cloud/examples/word_ctr.txt', 'w') as f:
+    for (term, freq) in term_ctr:
+      f.write("%s:%d\n" % (term, int(round(freq))))
 
-def dict_to_list_of_tuples(term_ctr):
-  li_of_tup = [ ]
-  for term in term_ctr:
-    li_of_tup.append((term, term_ctr[term]))
-  return li_of_tup
+def sort_dict_by_value(x):
+  return sorted(x.iteritems(), key=operator.itemgetter(1), reverse = True)
+
+def normalize_ctr_values(all_terms, new_min, new_max):
+  orig_max = max(all_terms.values())
+  orig_min = min(all_terms.values())
+  for term in all_terms:
+    all_terms[term] = new_min + \
+        float(new_max - new_min) * (all_terms[term] - orig_min) / (orig_max - orig_min)
 
 def main(argv):
   check_args(argv)
@@ -67,10 +73,11 @@ def main(argv):
     terms = get_nouns.get_nouns_and_noun_phrases(abs)
     for t in terms:
       term = ' '.join(t)
-      #for i in range(2 * len(term.split())):  # repeat 2*n times for a n-gram
-      all_terms[term] += 2 * len(term.split())  # the weight of an n-gram is set to 2 * n
+      if term != '':
+        all_terms[term] += 2 * len(term.split())  # the weight of an n-gram is set to 2 * n
 
-  gen_tag_cloud(dict_to_list_of_tuples(all_terms))
+  normalize_ctr_values(all_terms, 10, 100)
+  gen_tag_cloud(sort_dict_by_value(all_terms))
 
 if __name__ == "__main__":
   main(sys.argv)
